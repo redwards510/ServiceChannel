@@ -71,6 +71,11 @@ namespace ServiceChannel.Controllers
             {
                 return UnprocessableEntity("Invalid Date");
             }
+            if (sDate > eDate)
+            {
+                return BadRequest("Start Date cannot be after End Date");
+            }
+
             var result = _countyService.GetRateOfChangeDto(county, state, sDate, eDate);
 
             return Ok(result);
