@@ -1,4 +1,5 @@
 ﻿using GuigleApi;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,15 +12,22 @@ namespace ServiceChannel.Services
     {
         Task<GeocodedAddress> GeocodeAddress(string address);
     }
+
     /// <summary>
     /// Service for calling Google's geocoding provided address fragments and returning a county and state, or just a state
     /// </summary>
     public class GeocodingService : IGeocodingService
     {
+        private readonly IConfiguration Configuration;
+
+        public GeocodingService (IConfiguration configuration)
+	    {
+            Configuration = configuration;
+	    }
         public async Task<GeocodedAddress> GeocodeAddress(string address)
         {
             var httpClient = new HttpClient();
-            var googleGeocodingApi = new GoogleGeocodingApi("AIzaSyBqBbxUfjM7wksH6KvDYb5wbUk6lV7Ox2Y");
+            var googleGeocodingApi = new GoogleGeocodingApi(Configuration["GoogleApiKey"]);
             var loc = await googleGeocodingApi.SearchAddress(httpClient, address);
             var result = new GeocodedAddress
             {
