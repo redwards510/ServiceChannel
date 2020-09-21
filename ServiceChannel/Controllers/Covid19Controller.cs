@@ -44,10 +44,34 @@ namespace ServiceChannel.Controllers
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         [HttpGet]
-        public ActionResult Get(string address, string county, string state, string startDate, string endDate)
+        public IActionResult Get(string address, string county, string state, string startDate, string endDate)
         {
             
             var result = _countyService.GetBaseResultDto(county, state, (DateTime)HttpContext.Items["sDate"], (DateTime)HttpContext.Items["eDate"]);
+            return Ok(result);
+        }
+
+        [Produces("application/json")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
+        [ServiceFilter(typeof(ValidationFilterAttribute))]
+        [HttpGet("DailyBreakdown")]
+        public ActionResult GetDailyBreakdown(string address, string county, string state, string startDate, string endDate)
+        {
+            var result = _countyService.GetDailyBreakDownDto(county, state, (DateTime)HttpContext.Items["sDate"], (DateTime)HttpContext.Items["eDate"]);
+            return Ok(result);
+        }
+
+        [Produces("application/json")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
+        [ServiceFilter(typeof(ValidationFilterAttribute))]
+        [HttpGet("RateOfChange")]
+        public ActionResult GetRateOfChange(string address, string county, string state, string startDate, string endDate)
+        {
+            var result = _countyService.GetRateOfChangeDto(county, state, (DateTime)HttpContext.Items["sDate"], (DateTime)HttpContext.Items["eDate"]);
             return Ok(result);
         }
 
