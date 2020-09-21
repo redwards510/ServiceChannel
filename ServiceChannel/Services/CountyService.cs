@@ -41,7 +41,7 @@ namespace ServiceChannel.Services
             }
 
             var result = new BaseDTO();
-            result = (BaseDTO)PopulateBaseDto(result, theCounty, infections, state);
+            PopulateBaseDto(result, theCounty, infections, state);
             return result;
         }
 
@@ -75,7 +75,7 @@ namespace ServiceChannel.Services
             }
 
             var result = new DailyBreakDownDTO();
-            result = (DailyBreakDownDTO)PopulateBaseDto(result, theCounty, infections, state);
+            PopulateBaseDto(result, theCounty, infections, state);
             result.DailyInfections = infectionsDtos.ToList();
             return result;
         }
@@ -110,7 +110,7 @@ namespace ServiceChannel.Services
             var rateOfChangeInCases = differenceBetweenDates / daysTotal;
 
             var result = new RateOfChangeDTO();
-            result = (RateOfChangeDTO)PopulateBaseDto(result, theCounty, infections, state);
+            PopulateBaseDto(result, theCounty, infections, state);
             result.RateOfChangeInCases = rateOfChangeInCases;
             result.PercentIncrease = percentageIncrease;
             return result;
@@ -124,8 +124,8 @@ namespace ServiceChannel.Services
         /// <param name="infections"></param>
         /// <param name="state"></param>
         /// <returns></returns>
-        private IBaseDTO PopulateBaseDto(IBaseDTO dto, County theCounty, IEnumerable<Infections> infections, string state)
-        {
+        private void PopulateBaseDto(BaseDTO dto, County theCounty, IEnumerable<Infections> infections, string state)
+        {            
             // order by date ensures we display the earliest possible date if there is a match on multiple days
             var maxInfectionDay = infections.Where(x => x.NewCases == infections.Max(i => i.NewCases)).OrderBy(d => d.Date).FirstOrDefault();
             var minInfectionDay = infections.Where(x => x.NewCases == infections.Min(i => i.NewCases)).OrderBy(d => d.Date).FirstOrDefault();
@@ -139,7 +139,6 @@ namespace ServiceChannel.Services
             dto.MaximumNumberOfCasesDate = maxInfectionDay.Date.ToString("MM/dd/yyyy");
             dto.MinimumNumberOfCases = minInfectionDay.NewCases;
             dto.MinimumNumberOfCasesDate = minInfectionDay.Date.ToString("MM/dd/yyyy");            
-            return dto;
         }
 
         /// <summary>

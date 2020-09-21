@@ -2,7 +2,7 @@
 
 namespace ServiceChannel.DTO
 {
-    public class DailyBreakDownDTO : BaseDTO, IBaseDTO
+    public class DailyBreakDownDTO : BaseDTO
     {
         public List<InfectionsDTO> DailyInfections { get; set; }
     }
