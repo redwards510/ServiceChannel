@@ -1,3 +1,4 @@
+using ActionFilters.ActionFilters;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -38,6 +39,8 @@ namespace ServiceChannel
             services.AddSwaggerGen();
             services.AddScoped<ICountyService, CountyService>();
             services.AddScoped<IGeocodingService, GeocodingService>();
+
+            services.AddScoped<ValidationFilterAttribute>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
